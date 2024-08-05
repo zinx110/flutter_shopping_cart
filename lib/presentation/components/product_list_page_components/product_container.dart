@@ -10,23 +10,26 @@ class ProductContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.sizeOf(context);
 
-    return Expanded(
-      child: GridView.builder(
-        itemCount: products.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: size.width > 650 ? 2 : 1),
-        itemBuilder: (context, index) {
-          final product = products[index];
+    // if (size.width > 650) {
+    //   return Expanded(
+    //     child: GridView.builder(
+    //       itemCount: products.length,
+    //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    //           childAspectRatio: 2, crossAxisCount: 2),
+    //       itemBuilder: (context, index) {
+    //         final product = products[index];
 
-          return ProductCard(
-            product: product,
-            index: index,
-          );
-        },
-      ),
-    );
+    //         return ProductCard(
+    //           product: product,
+    //           index: index,
+    //         );
+    //       },
+    //     ),
+    //   );
+    // }
 
     // return Expanded(
     //   child: ListView.builder(
@@ -41,5 +44,39 @@ class ProductContainer extends StatelessWidget {
     //     },
     //   ),
     // );
+
+    return Expanded(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 1080) {
+            return GridView.builder(
+              itemCount: products.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio: 1.75,
+                crossAxisCount: 2,
+              ),
+              itemBuilder: (context, index) {
+                final product = products[index];
+
+                return ProductCard(
+                  product: product,
+                  index: index,
+                );
+              },
+            );
+          }
+          return ListView.builder(
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                final product = products[index];
+
+                return ProductCard(
+                  product: product,
+                  index: index,
+                );
+              });
+        },
+      ),
+    );
   }
 }
